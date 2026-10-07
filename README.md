@@ -18,7 +18,7 @@
 | # | Блок | Занятие | ДЗ |
 |---|---|---|---|
 | 01 | I. Что значит «объяснить» | [Введение: зачем XAI, таксономия методов](lessons/01_intro/) | выдача ДЗ-1 (Stepik) |
-| 02 | I | [AI safety: риски, alignment, defense in depth](lessons/02_ai_safety_alignment/) · совместно с AISF | |
+| 02 | I | [AI safety: риски, alignment, defense in depth](lessons/02_ai_safety_alignment/)| |
 | 03 | I | [Glass boxes: линейные модели, GAM/EBM, деревья и бустинги](lessons/03_glass_boxes/) | |
 | 04 | II. Post-hoc на таблицах | Глобальные model-agnostic: Permutation, PDP, ICE, ALE | |
 | 05 | II | Локальные: LIME, SHAP, контрфактуалы | дедлайн ДЗ-1 — через 2 недели |
