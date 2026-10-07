@@ -1,6 +1,6 @@
 # Lesson 01. Introduction and XAI terminology
 
-Lecture notes. Slides are on the course Google Drive.
+Lecture notes. Slides are posted in the course chat.
 
 Lesson outline:
 1. Why explain models.

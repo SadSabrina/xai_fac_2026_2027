@@ -9,7 +9,7 @@ Instructor: Sabrina Sadiekh.
 
 - Materials are added as the course goes. Update your copy before each lesson: `git pull`.
 - Each lesson folder contains a README with the topics, short lecture notes and references and, where available, a demo notebook with the code of all examples.
-- Slides are shared via the course Google Drive.
+- Slides are posted in the course chat.
 - Assignments are in `homeworks/`: a notebook and a README with the task, points and deadlines.
 - Reference solutions may be published later.
 

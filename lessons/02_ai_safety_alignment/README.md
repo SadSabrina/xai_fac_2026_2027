@@ -1,6 +1,6 @@
 # Lesson 02. AI safety: what can go wrong with powerful AI and how we defend against it
 
-Joint lesson. Slides are on the course Google Drive.
+Joint lesson. Slides are posted in the course chat.
 
 ## Topics
 1. Why now: incidents with AI agents in 2025–2026.

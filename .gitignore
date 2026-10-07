@@ -7,7 +7,7 @@ tools
 # lessons in preparation: a finished lesson is moved back to lessons/
 in_prepare/
 
-# slides are shared via Google Drive
+# slides are posted in the course chat
 *.pptx
 *.key
 
