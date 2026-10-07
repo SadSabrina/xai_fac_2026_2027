@@ -1,0 +1,33 @@
+# материалы для подготовки и исходники слайдов 
+related/
+**/related/
+**/slides_src/
+tools
+
+# занятия в подготовке: готовое занятие переносится обратно в lessons/
+in_prepare/
+
+# презентации раздаются через Google Диск
+*.pptx
+*.key
+
+.DS_Store
+.venv/
+.cache/
+__pycache__/
+.ipynb_checkpoints/
+
+# скачиваемые данные (Imagenette, MovieLens) — ноутбуки скачивают их сами
+data/imagenette2-160*
+data/ml-100k*
+**/data/imagenette2-160*
+**/data/ml-100k*
+
+# эталонные решения (не отдам =))
+solutions/
+tools/build_hw*.py
+tools/hw*_answers.json
+
+# in progress
+homeworks/hw2_modalities
+homeworks/hw3_trust_llm_agents
