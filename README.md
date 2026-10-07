@@ -1,77 +1,77 @@
-# Объяснимый искусственный интеллект (XAI) — факультатив, 2026/27
+# Explainable Artificial Intelligence (XAI) — elective, 2026/27
 
-**Вопрос факультатива:** «Почему модель приняла это решение — и можно ли доверять этому ответу?»
-Первая половина учит получать объяснения, вторая — проверять их и применять там, где мы все сегодня: LLM и агенты.
+**The question of the course:** "Why did the model make this decision — and can we trust the answer?"
+The first half teaches how to obtain explanations; the second half teaches how to check them and apply them where we all are today: LLMs and agents.
 
-Преподаватель: Сабрина Садиех.
+Instructor: Sabrina Sadiekh.
 
-## Как пользоваться репозиторием
+## How to use this repository
 
-- Материалы появляются по мере курса. Перед каждым занятием обновляйте копию: `git pull`.
-- В папке занятия лежит README с темами, коротким конспектом и литературой и, если есть, демо-ноутбук с кодом всех примеров.
-- Презентации раздаются через Google Диск курса.
-- Задания — в `homeworks/`: ноутбук и README с условиями, баллами и сроками.
-- Эталонные решения возможно будут. 
+- Materials are added as the course goes. Update your copy before each lesson: `git pull`.
+- Each lesson folder contains a README with the topics, short lecture notes and references and, where available, a demo notebook with the code of all examples.
+- Slides are shared via the course Google Drive.
+- Assignments are in `homeworks/`: a notebook and a README with the task, points and deadlines.
+- Reference solutions may be published later.
 
-## Занятия: 12 пар + защита проекта
+## Lessons: 12 sessions + project defence
 
-| # | Блок | Занятие | ДЗ |
+| # | Block | Lesson | HW |
 |---|---|---|---|
-| 01 | I. Что значит «объяснить» | [Введение: зачем XAI, таксономия методов](lessons/01_intro/) | выдача ДЗ-1 (Stepik) |
-| 02 | I | [AI safety: риски, alignment, defense in depth](lessons/02_ai_safety_alignment/)| |
-| 03 | I | [Glass boxes: линейные модели, GAM/EBM, деревья и бустинги](lessons/03_glass_boxes/) | |
-| 04 | II. Post-hoc на таблицах | Глобальные model-agnostic: Permutation, PDP, ICE, ALE | |
-| 05 | II | Локальные: LIME, SHAP, контрфактуалы | дедлайн ДЗ-1 — через 2 недели |
-| 06 | III. За пределами таблиц | Изображения: градиенты, Grad-CAM, IG, RISE | выдача ДЗ-2 |
-| 07 | III | Текст и временные ряды | |
-| 08 | III | Рекомендации, графы, аудио, мультимодальность | |
-| 09 | IV. Можно ли верить? | Оценка объяснений: faithfulness, sanity checks, необходимость и достаточность | дедлайн ДЗ-2 |
-| 10 | IV | Хрупкость и атаки на объяснения | выдача ДЗ-3 |
-| 11 | V. Куда это ведёт | Прикладной анализ LLM | |
-| 12 | V | Объяснение агентов + старт проекта | |
-| — | | Защита мини-исследований | дедлайн ДЗ-3 и всего Stepik |
+| 01 | I. What does it mean to "explain" | [Introduction: why XAI, taxonomy of methods](lessons/01_intro/) | HW1 released (Stepik) |
+| 02 | I | [AI safety: risks, alignment, defense in depth](lessons/02_ai_safety_alignment/) | |
+| 03 | I | [Glass boxes: linear models, GAM/EBM, trees and boosting](lessons/03_glass_boxes/) | |
+| 04 | II. Post-hoc on tabular data | Global model-agnostic methods: permutation importance, PDP, ICE, ALE | |
+| 05 | II | Local methods: LIME, SHAP, counterfactuals | HW1 deadline — 2 weeks later |
+| 06 | III. Beyond tables | Images: gradients, Grad-CAM, IG, RISE | HW2 released |
+| 07 | III | Text and time series | |
+| 08 | III | Recommender systems, graphs, audio, multimodal models | |
+| 09 | IV. Can we trust it? | Evaluating explanations: faithfulness, sanity checks, necessity and sufficiency | HW2 deadline |
+| 10 | IV | Fragility of and attacks on explanations | HW3 released |
+| 11 | V. Where this leads | Applied analysis of LLMs | |
+| 12 | V | Explaining agents + project kick-off | |
+| — | | Mini-research project defence | HW3 and all Stepik deadline |
 
-## Домашние задания
+## Homework
 
-| ДЗ | Тема | Покрывает | Формат |
+| HW | Topic | Covers | Format |
 |---|---|---|---|
-| [ДЗ-1](homeworks/hw1_stepik/) | Интерпретируемые модели и post-hoc на таблицах | занятия 01, 03–05 | четыре практических блока Stepik-курса [«Интерпретируемые модели AI»](https://stepik.org/course/228094), автопроверка |
-| [ДЗ-2](homeworks/hw2_modalities/) | Объяснения на всех модальностях | занятия 04, 06–08 | ноутбук: таблицы, изображения, текст, ряды, аудио, графы, рекомендации, мультимодальность |
-| [ДЗ-3](homeworks/hw3_trust_llm_agents/) | Можно ли верить объяснению: проверка, атака, LLM, агенты | занятия 09–12 | ноутбук: sanity checks и faithfulness, атака на SHAP, атрибуция контекста LLM, необходимость в логах агента |
+| [HW1](homeworks/hw1_stepik/) | Interpretable models and post-hoc methods on tabular data | lessons 01, 03–05 | four practice blocks of the Stepik course ["Interpretable AI models"](https://stepik.org/course/228094), auto-graded |
+| [HW2](homeworks/hw2_modalities/) | Explanations across all modalities | lessons 04, 06–08 | notebook: tables, images, text, time series, audio, graphs, recommendations, multimodal |
+| [HW3](homeworks/hw3_trust_llm_agents/) | Can we trust an explanation: evaluation, attacks, LLMs, agents | lessons 09–12 | notebook: sanity checks and faithfulness, an attack on SHAP, context attribution in an LLM, necessity in agent logs |
 
-Сроки, баллы и способ сдачи будут в README каждого задания.
+Deadlines, points and submission rules will be given in the README of each assignment.
 
-## Оценивание
+## Grading
 
 ```
-Итог = 0.2·Проект + 0.7·MEAN(ДЗ-1, ДЗ-2, ДЗ-3) + 0.1·Stepik
+Final = 0.2·Project + 0.7·MEAN(HW1, HW2, HW3) + 0.1·Stepik
 ```
 
-- **ДЗ-1** — четыре практических блока Stepik («…: практика»), дедлайн через 2 недели после занятия 05.
-- **Stepik** — все остальные тестовые задания курса, дедлайн — конец курса.
-- Stepik-id собираются за неделю до дедлайна ДЗ-1. Выгрузка Stepik делается два раза: после дедлайна ДЗ-1 и в конце курса. Подробнее — в [README ДЗ-1](homeworks/hw1_stepik/).
+- **HW1** — four practice blocks on Stepik ("…: practice"); deadline 2 weeks after lesson 05.
+- **Stepik** — all other quiz tasks of the course; deadline — end of the course.
+- Stepik IDs are collected one week before the HW1 deadline. Stepik results are exported twice: after the HW1 deadline and at the end of the course. Details are in the [HW1 README](homeworks/hw1_stepik/).
 
-Без защиты проекта — не выше 7–8 из 10. Проект — мини-исследование: применить XAI-метод к своей задаче, проверить объяснение и его устойчивость.
+Without the project defence the final grade is at most 7–8 out of 10. The project is a mini-research study: apply an XAI method to your own task and check the explanation and its robustness.
 
-## Окружение
+## Environment
 
-Python 3.12. Установка через [uv](https://docs.astral.sh/uv/):
+Python 3.12. Installation with [uv](https://docs.astral.sh/uv/):
 
 ```bash
-git clone <ссылка на репозиторий> && cd xai_fac_2026_2027
+git clone <repository link> && cd xai_fac_2026_2027
 uv venv --python 3.12 && uv pip install -r requirements.txt
 source .venv/bin/activate
-python -m ipykernel install --user --name xai_fac   # ядро для Jupyter
+python -m ipykernel install --user --name xai_fac   # Jupyter kernel
 ```
 
-Без uv: `python3.12 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`.
+Without uv: `python3.12 -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt`.
 
-Всё, кроме части 3 ДЗ-3 (LLM на 0,5B параметров, ~1 ГБ), считается на CPU ноутбука. GPU (CUDA или Apple MPS), не обязательны, живем в бедности! Модели и данные скачиваются при первом запуске ноутбуков.
+Everything except part 3 of HW3 (a 0.5B-parameter LLM, ~1 GB) runs on a laptop CPU. A GPU (CUDA or Apple MPS) is not required — we live frugally! Models and data are downloaded on the first run of the notebooks.
 
-## Структура
+## Structure
 
 ```
-lessons/NN_*/        README занятия (темы и конспект), демо-ноутбук
-homeworks/hwN_*/     ноутбук-задание и README (+ data/ для ДЗ-3)
-requirements.txt     версии библиотек, на которых проверены все ноутбуки
+lessons/NN_*/        lesson README (topics and notes), demo notebook
+homeworks/hwN_*/     assignment notebook and README (+ data/ for HW3)
+requirements.txt     library versions on which all notebooks were tested
 ```

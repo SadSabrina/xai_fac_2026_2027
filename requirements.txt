@@ -1,4 +1,4 @@
-# Python 3.12. Версии — те, на которых выполнены эталонные решения.
+# Python 3.12. Versions on which the reference solutions were run.
 numpy==2.5.3
 pandas==3.0.6
 scipy==1.18.1

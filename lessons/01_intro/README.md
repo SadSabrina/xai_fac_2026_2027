@@ -1,446 +1,446 @@
-# Занятие 01. Введение и терминология XAI
+# Lesson 01. Introduction and XAI terminology
 
-Конспект занятия. Презентация — на Google Диске курса.
+Lecture notes. Slides are on the course Google Drive.
 
-План занятия:
-1. Зачем объяснять модели.
-2. Четыре бага и «что повлияло».
-3. Язык: что именно мы объясняем.
-4. Формы объяснения.
-5. Кому объяснять и где объяснения врут.
-6. Организационные моменты и ДЗ-1.
-
----
-
-## 0. Организация факультатива
-
-### Оценка
-
-$$\text{Итог} = 0.2 \cdot \text{Проект} + 0.7 \cdot \text{среднее}(ДЗ_1, ДЗ_2, ДЗ_3) + 0.1 \cdot \text{Stepik}$$
-
-| ДЗ | Тема | Занятия |
-|---|---|---|
-| ДЗ-1 | Stepik: интерпретируемые модели | 01–05 |
-| ДЗ-2 | Объяснения на всех модальностях | 04, 06–08 |
-| ДЗ-3 | Проверка, атака, LLM, агенты | 09–12 |
-
-Без защиты проекта итоговая оценка не выше 7–8 из 10.
-
-### Блоки курса
-
-Формат: онлайн, 11–12 занятий по 90 минут и защита проекта.
-
-| Блок | Занятия | Тема |
-|---|---|---|
-| I | 01–03 | Что значит объяснить в терминах ML и DL; AI safety; glass boxes |
-| II | 04–05 | Пост-хок на таблицах |
-| III | 06–08 | За пределами таблиц: изображения, текст, ряды, графы, звук, мультимодальность |
-| IV | 09–10 | Как оценивать качество объяснения |
-| V | 11–12 | Прикладной анализ LLM и агенты |
-
-Примерный порядок занятий: что значит объяснить → AI safety (совместно с AISF) → glass boxes → PDP, ICE, ALE → LIME, SHAP, контрфактуалы → изображения → текст и ряды → recsys, графы, звук → оценка объяснений → атаки на объяснения → прикладной анализ LLM → агенты → защита проекта.
-
-Выдача и дедлайны ДЗ:
-- ДЗ-1: выдача на занятии 01, дедлайн перед занятием 05.
-- ДЗ-2: выдача на занятии 06, дедлайн на занятии 09.
-- ДЗ-3: выдача на занятии 10, дедлайн к защите проекта.
-
-ДЗ-1 — ноутбуки на Stepik, помеченные как «практика». ДЗ-2 и ДЗ-3 — выдаваемые ноутбуки с баллами.
-
-### ДЗ-1
-
-Курс «Интерпретируемые модели AI»: [stepik.org/course/228094](https://stepik.org/course/228094).
-
-- Выдача: на первом занятии.
-- Дедлайн: перед вторым ДЗ, примерно перед занятием 05.
-- Оценка: доля набранных баллов на Stepik, переведённая в шкалу 10.
-
-Задания с автопроверкой:
-- линейные модели: веса, регуляризация;
-- туториал: веса линейной регрессии;
-- лес и бустинги: важности признаков;
-- SHAP: практика;
-- LIME: практика;
-- завершающий тест.
-
-### Проект
-
-Мини-исследование: взять модель и XAI-метод и проверить, можно ли верить объяснению.
-
-1. **Применить.** Модель и данные, свои или открытые. Получить объяснение подходящим методом.
-2. **Проверить.** Верно ли объяснение: sanity check, deletion / insertion, контрфактуал.
-3. **Провалидировать на хрупкость.** Другой seed, baseline, фон, атака. Что это значит для пользователя.
-
-Формат: репозиторий с воспроизводимым кодом, отчёт 4–6 страниц, защита 10 минут.
-
-Сроки: тема к занятию 08, чекпоинт к занятию 11, защита в конце курса (на занятии 12 или асинхронно).
-
-Примеры тем:
-- устойчив ли SHAP в скоринге к выбору фона;
-- проходит ли Grad-CAM sanity check на медицинских снимках;
-- ловит ли probe-монитор для LLM нужное поведение.
-
-Вес проекта — 0.2 итоговой оценки.
+Lesson outline:
+1. Why explain models.
+2. Four bugs and "what influenced the output".
+3. Language: what exactly we explain.
+4. Forms of explanation.
+5. Whom to explain to, and where explanations lie.
+6. Organizational matters and HW1.
 
 ---
 
-## 1. Зачем объяснять модели
+## 0. Elective organization
 
-### Где модель принимает решения о людях
+### Grading
 
-Кредитный лимит, антифрод, отбор резюме, лента и реклама, цены на страховку и такси.
+$$\text{Final} = 0.2 \cdot \text{Project} + 0.7 \cdot \text{mean}(HW_1, HW_2, HW_3) + 0.1 \cdot \text{Stepik}$$
 
-От объяснения люди хотят разного:
-- **П** — почему решение такое;
-- **Д** — что сделать, чтобы решение было другим;
-- **О** — как его оспорить.
+| HW | Topic | Lessons |
+|---|---|---|
+| HW1 | Stepik: interpretable models | 01–05 |
+| HW2 | Explanations across all modalities | 04, 06–08 |
+| HW3 | Verification, attacks, LLMs, agents | 09–12 |
 
-### Области, где требуют XAI
+Without a project defense, the final grade is capped at 7–8 out of 10.
 
-| Область | Почему |
+### Course blocks
+
+Format: online, 11–12 lessons of 90 minutes each, plus a project defense.
+
+| Block | Lessons | Topic |
+|---|---|---|
+| I | 01–03 | What it means to explain in ML and DL terms; AI safety; glass boxes |
+| II | 04–05 | Post-hoc methods on tabular data |
+| III | 06–08 | Beyond tables: images, text, time series, graphs, audio, multimodality |
+| IV | 09–10 | How to evaluate explanation quality |
+| V | 11–12 | Applied LLM analysis and agents |
+
+Tentative lesson order: what it means to explain → AI safety (jointly with AISF) → glass boxes → PDP, ICE, ALE → LIME, SHAP, counterfactuals → images → text and time series → recsys, graphs, audio → evaluating explanations → attacks on explanations → applied LLM analysis → agents → project defense.
+
+HW release and deadlines:
+- HW1: released at lesson 01, due before lesson 05.
+- HW2: released at lesson 06, due at lesson 09.
+- HW3: released at lesson 10, due by the project defense.
+
+HW1 consists of the Stepik notebooks marked "practice". HW2 and HW3 are released notebooks with points.
+
+### HW1
+
+Course "Interpretable AI Models": [stepik.org/course/228094](https://stepik.org/course/228094).
+
+- Release: at the first lesson.
+- Deadline: before the second HW, approximately before lesson 05.
+- Grade: fraction of points earned on Stepik, converted to a 10-point scale.
+
+Auto-graded assignments:
+- linear models: weights, regularization;
+- tutorial: linear regression weights;
+- forests and boosting: feature importances;
+- SHAP: practice;
+- LIME: practice;
+- final test.
+
+### Project
+
+A mini-study: take a model and an XAI method and check whether the explanation can be trusted.
+
+1. **Apply.** A model and data, your own or open. Obtain an explanation with a suitable method.
+2. **Verify.** Is the explanation correct: sanity check, deletion / insertion, counterfactual.
+3. **Validate for fragility.** Different seed, baseline, background, attack. What this means for the user.
+
+Format: a repository with reproducible code, a 4–6 page report, a 10-minute defense.
+
+Timeline: topic by lesson 08, checkpoint by lesson 11, defense at the end of the course (at lesson 12 or asynchronously).
+
+Example topics:
+- is SHAP in credit scoring robust to the choice of background;
+- does Grad-CAM pass a sanity check on medical images;
+- does a probe monitor for an LLM catch the intended behavior.
+
+The project weight is 0.2 of the final grade.
+
+---
+
+## 1. Why explain models
+
+### Where models make decisions about people
+
+Credit limits, anti-fraud, resume screening, feeds and ads, insurance and taxi pricing.
+
+People want different things from an explanation:
+- **W** — why the decision is what it is;
+- **C** — what to change so that the decision would be different;
+- **A** — how to appeal it.
+
+### Domains that require XAI
+
+| Domain | Why |
 |---|---|
-| Финансы | Скоринг, лимиты, антифрод. Отказ нужно обосновать клиенту и регулятору; модель проверяют на дискриминацию. |
-| Медицина | Модель поддерживает решение врача. Врач должен видеть, на что она опирается, чтобы её проверить. |
-| Социальная сфера | Найм, пособия, правосудие. Ошибка затрагивает людей, у которых нет ресурсов её оспорить. |
+| Finance | Scoring, limits, anti-fraud. A rejection must be justified to the client and the regulator; the model is audited for discrimination. |
+| Medicine | The model supports the physician's decision. The physician must see what it relies on in order to check it. |
+| Social sector | Hiring, welfare benefits, justice. An error affects people who lack the resources to contest it. |
 
-### Безобидный пример: хаски или волк (Ribeiro et al., 2016)
+### A harmless example: husky or wolf (Ribeiro et al., 2016)
 
-1. **Данные:** все волки на снегу, хаски без снега.
-2. **Модель:** высокая точность на тесте того же распределения.
-3. **Объяснение:** LIME подсвечивает снег, а не животное.
-4. **Итог:** люди перестают доверять модели.
+1. **Data:** all wolves are on snow, huskies are without snow.
+2. **Model:** high accuracy on a test set from the same distribution.
+3. **Explanation:** LIME highlights the snow, not the animal.
+4. **Outcome:** people stop trusting the model.
 
-Пример сконструирован: классификатор сделали плохим намеренно, чтобы проверить, заметят ли это люди.
+The example is constructed: the classifier was made bad on purpose to test whether people would notice.
 
-### Обидные примеры
+### Harmful examples
 
-| Случай | Задача | Что произошло |
+| Case | Task | What happened |
 |---|---|---|
-| Amazon, 2018 | Отбор резюме | Модель штрафовала резюме со словом «women's». Проект закрыли. |
-| COMPAS, 2016 | Риск рецидива | У чернокожих обвиняемых ложный «высокий риск» встречался примерно вдвое чаще (ProPublica). |
-| Нидерланды, 2021 | Пособия на детей | Риск-профиль учитывал двойное гражданство. Тысячи семей ложно обвинены; правительство ушло в отставку. |
-| Apple Card, 2019 | Кредитные лимиты | Жалобы на разные лимиты супругам. Регулятор дискриминации не нашёл, но банк не смог объяснить решения. |
+| Amazon, 2018 | Resume screening | The model penalized resumes containing the word "women's". The project was shut down. |
+| COMPAS, 2016 | Recidivism risk | Black defendants were falsely labeled "high risk" roughly twice as often (ProPublica). |
+| Netherlands, 2021 | Childcare benefits | The risk profile took dual citizenship into account. Thousands of families were falsely accused; the government resigned. |
+| Apple Card, 2019 | Credit limits | Complaints about different limits for spouses. The regulator found no discrimination, but the bank could not explain the decisions. |
 
-Медицина:
+Medicine:
 
-| Работа | Задача | Что нашли |
+| Work | Task | What was found |
 |---|---|---|
-| Zech et al., 2018 | Пневмония | Модель различала больницы по снимкам, а доля больных в больницах разная. На новой больнице качество падало. |
-| DeGrave et al., 2021 | COVID-19 | Детекторы опирались на текст, маркеры и положение пациента, а не на лёгкие. |
-| Oakden-Rayner et al., 2020 | Пневмоторакс | Модель находила дренаж, то есть уже пролеченных пациентов. |
+| Zech et al., 2018 | Pneumonia | The model distinguished hospitals from the images, and the prevalence of disease differed across hospitals. Performance dropped at a new hospital. |
+| DeGrave et al., 2021 | COVID-19 | Detectors relied on text, markers and patient positioning rather than the lungs. |
+| Oakden-Rayner et al., 2020 | Pneumothorax | The model detected the chest drain, i.e. patients already treated. |
 
-### Аналогия: Умный Ганс
+### Analogy: Clever Hans
 
-Конь Ганс отстукивал копытом ответы на арифметические задачи и почти всегда отвечал правильно. Пфунгст (1907) поставил контрольный эксперимент: спрашивающий сам не знает ответа или не виден коню. Точность падает до случайной. Ганс считывал позу и мимику людей.
+The horse Hans tapped out answers to arithmetic problems with his hoof and was almost always correct. Pfungst (1907) ran a controlled experiment: the questioner does not know the answer, or is not visible to the horse. Accuracy drops to chance. Hans was reading people's posture and facial expressions.
 
-Урок для ML:
-- правильный ответ не означает правильного механизма;
-- проверка — это вмешательство, а не точность на тесте: убрать подозрительный сигнал и посмотреть, что станет с ответом.
+Lesson for ML:
+- a correct answer does not imply a correct mechanism;
+- verification is an intervention, not test accuracy: remove the suspicious signal and see what happens to the answer.
 
-### Регуляторика
+### Regulation
 
-| Документ | Что требует | Следствие для модели |
+| Document | What it requires | Implication for the model |
 |---|---|---|
-| GDPR, ст. 22 (+ п. 71 преамбулы) | Право не подлежать полностью автоматическому решению; право на объяснение | Нужна возможность объяснить конкретное решение |
-| EU AI Act, ст. 13 и 86 (2024) | Прозрачность систем высокого риска; право на объяснение решения | Документация и локальные объяснения |
-| ECOA / Regulation B (США) | При отказе в кредите сообщить основные причины | Топ причин отказа для каждого клиента |
+| GDPR, Art. 22 (+ Recital 71) | Right not to be subject to a solely automated decision; right to an explanation | The ability to explain a specific decision is needed |
+| EU AI Act, Art. 13 and 86 (2024) | Transparency of high-risk systems; right to an explanation of a decision | Documentation and local explanations |
+| ECOA / Regulation B (US) | When credit is denied, state the principal reasons | Top rejection reasons for each client |
 
-### Может, просто не делать чёрный ящик?
+### Why not just avoid black boxes?
 
-Синтия Рудин (Cynthia Rudin), Duke University. Профессор, исследует интерпретируемое ML; премия AAAI Squirrel AI Award (2021).
+Cynthia Rudin, Duke University. Professor researching interpretable ML; AAAI Squirrel AI Award (2021).
 
-Тезис (2019): в задачах с высокой ценой ошибки на табличных данных интерпретируемая модель часто почти не уступает чёрному ящику, а пост-хок объяснение — ещё одна модель, которая может быть неверна.
+Thesis (2019): in high-stakes tasks on tabular data, an interpretable model is often almost as good as a black box, while a post-hoc explanation is yet another model that may be wrong.
 
-- **За:** таблицы, скоринг, медицина; логистическая регрессия, GAM, EBM, короткие деревья (занятие 03).
-- **Против:** изображения, текст, звук, LLM; интерпретируемой по построению модели нужного качества для них нет.
+- **For:** tabular data, scoring, medicine; logistic regression, GAM, EBM, shallow trees (lesson 03).
+- **Against:** images, text, audio, LLMs; for these there is no interpretable-by-design model of the required quality.
  
 
-### Цели XAI
+### Goals of XAI
 
-| Цель | Содержание |
+| Goal | Content |
 |---|---|
-| Отладка | Найти утечки и шорткаты до продакшна |
-| Доверие | Пользователь понимает, когда модели верить |
-| Требования | Обосновать решение клиенту и регулятору |
-| Справедливость | Проверить, не использует ли модель пол или его прокси |
-| Знание | Узнать, что модель выучила такого, чего не знаем мы |
+| Debugging | Find leakage and shortcuts before production |
+| Trust | The user understands when to trust the model |
+| Compliance | Justify a decision to the client and the regulator |
+| Fairness | Check whether the model uses gender or its proxies |
+| Knowledge | Learn what the model has learned that we do not know |
 
-### Отладка нужна всем
+### Everyone needs debugging
 
-Цикл отладки:
+Debugging cycle:
 
-1. **Метрика хорошая**, но на части данных или в проде модель ведёт себя странно.
-2. **Объяснение:** на что модель опирается (SHAP, карты, похожие примеры).
-3. **Гипотеза**, например: «модель смотрит на филиал, а не на доход».
-4. **Вмешательство:** убрать или переставить признак, сдвинуть данные. Изменится ли ответ?
-5. **Исправление:** данные, признаки, разметка, а не только гиперпараметры.
+1. **The metric is good**, but on part of the data or in production the model behaves strangely.
+2. **Explanation:** what the model relies on (SHAP, maps, similar examples).
+3. **Hypothesis**, e.g.: "the model looks at the branch, not at income".
+4. **Intervention:** remove or permute a feature, shift the data. Does the answer change?
+5. **Fix:** data, features, labels, not only hyperparameters.
 
-Четыре типовых бага:
+Four typical bugs:
 
-| Баг | Описание |
+| Bug | Description |
 |---|---|
-| Утечка | Признак содержит ответ: ID, время записи, «плохой» филиал |
-| Шорткат | Фон, маркер на снимке, водяной знак связаны с меткой только в обучающих данных |
-| Ошибки разметки | Объекты с аномальными вкладами часто оказываются неверно размеченными |
-| Сдвиг данных | Важности в проде отличаются от обучения: модель опирается уже на другое |
+| Leakage | A feature contains the answer: ID, record time, a "bad" branch |
+| Shortcut | Background, a marker on an image, a watermark are associated with the label only in the training data |
+| Label noise | Objects with anomalous contributions often turn out to be mislabeled |
+| Dataset shift | Importances in production differ from training: the model now relies on something else |
 
 ---
 
-## 2. Формализация: что объясняем и что ищем
+## 2. Formalization: what we explain and what we look for
 
-### Кого спрашиваем
+### Whom we ask
 
 $$x \longrightarrow f \longrightarrow \hat y$$
 
-Объяснение строится как приближение модели:
+An explanation is built as an approximation of the model:
 
 $$\text{explanation}(f) = g \approx f$$
 
-Следовательно, у объяснения есть собственная ошибка $\lVert g - f \rVert$.
+Hence the explanation has its own error $\lVert g - f \rVert$.
 
-### Баг 1: утечка
+### Bug 1: leakage
 
-$$x_s = g(y,\ \text{процесс сбора}), \qquad x_s \notin \mathcal{I}_t$$
+$$x_s = g(y,\ \text{collection process}), \qquad x_s \notin \mathcal{I}_t$$
 
-$\mathcal{I}_t$ — информация, доступная в момент прогноза $t$. Признак $x_s$ несёт метку или след процесса её записи.
+$\mathcal{I}_t$ is the information available at prediction time $t$. The feature $x_s$ carries the label or a trace of the process by which it was recorded.
 
-- **Что происходит:** метка просочилась в признак. Признак вычислен после исхода или собран вместе с меткой. В момент прогноза его не будет, или он будет другим.
-- **Как видно в объяснении:** один признак определяет прогноз. Подозрительно большая важность у технического признака: ID, дата записи, филиал, источник данных.
-- **Проверка вмешательством:** пересобрать признаки строго на момент прогноза, разделив «обучение» и «прогноз». Честное качество падает.
+- **What happens:** the label has leaked into a feature. The feature is computed after the outcome or collected together with the label. At prediction time it will be unavailable, or different.
+- **How it shows in the explanation:** a single feature determines the prediction. Suspiciously high importance of a technical feature: ID, record date, branch, data source.
+- **Verification by intervention:** rebuild features strictly as of prediction time, separating "training" and "prediction". The honest performance drops.
 
-### Баг 2: шорткат
+### Bug 2: shortcut
 
 $$P_{\text{train}}(y \mid s) \neq P_{\text{deploy}}(y \mid s)$$
 
-$s$ — признак, по которому модель предсказывает $y$. Связь есть на обучении и исчезает при развёртывании.
+$s$ is a feature from which the model predicts $y$. The association holds in training and disappears at deployment.
 
-| Задача | Задуманный сигнал | Шорткат $s$ |
+| Task | Intended signal | Shortcut $s$ |
 |---|---|---|
-| Хаски / волк | форма морды, уши | снег на фоне |
-| Пневмония | затемнения в лёгких | маркер больницы |
-| Отбор резюме | опыт, навыки | слово «women's» |
-| Токсичность текста | оскорбление | упоминание группы людей |
+| Husky / wolf | muzzle shape, ears | snow in the background |
+| Pneumonia | lung opacities | hospital marker |
+| Resume screening | experience, skills | the word "women's" |
+| Text toxicity | insult | mention of a group of people |
 
-Пример из Lapuschkin et al. (2019): классификатор на Pascal VOC относит изображение к классу «лошадь» по подписи источника (водяному знаку) в углу. Без подписи изображение не классифицируется как лошадь; искусственная картинка с машиной и той же подписью классифицируется как лошадь.
+Example from Lapuschkin et al. (2019): a classifier on Pascal VOC assigns an image to the class "horse" based on the source caption (watermark) in the corner. Without the caption the image is not classified as a horse; an artificial image of a car with the same caption is classified as a horse.
 
-### Баг 3: ошибки разметки
+### Bug 3: label noise
 
-Наблюдаем $\tilde y$, а не $y$:
+We observe $\tilde y$, not $y$:
 
 $$P(\tilde y = j \mid y = i) = T_{ij}$$
 
-$T$ — матрица переходов. Шум бывает случайным (равномерным) и систематическим (одни классы путают с другими).
+$T$ is the transition matrix. Noise can be random (uniform) or systematic (certain classes are confused with others).
 
-- **Что происходит:** метки зашумлены. Модель воспроизводит ошибки, особенно систематические: путаница разметчиков выучивается как правило.
-- **Как видно в объяснении:** объяснение противоречит метке. Атрибуция указывает на признаки другого класса; некоторые обучающие примеры сильно влияют на ошибочные прогнозы (influence functions).
-- **Проверка вмешательством:** проверить подозрительные объекты вручную, исправить метки, переобучить. Меняется ли поведение модели?
+- **What happens:** labels are noisy. The model reproduces the errors, especially systematic ones: annotator confusion is learned as a rule.
+- **How it shows in the explanation:** the explanation contradicts the label. The attribution points to features of another class; some training examples strongly influence erroneous predictions (influence functions).
+- **Verification by intervention:** inspect suspicious objects manually, fix the labels, retrain. Does the model's behavior change?
 
-В валидационной части ImageNet не меньше 6% ошибок разметки (Northcutt, Athalye, Mueller, 2021).
+The ImageNet validation set contains at least 6% label errors (Northcutt, Athalye, Mueller, 2021).
 
-### Баг 4: сдвиг данных
+### Bug 4: dataset shift
 
 $$P_{\text{train}}(x, y) \neq P_{\text{deploy}}(x, y), \qquad P(x, y) = P(x)\,P(y \mid x)$$
 
-Шорткат — частный случай сдвига: меняется $P(y \mid s)$ для одного признака $s$.
+A shortcut is a special case of shift: $P(y \mid s)$ changes for a single feature $s$.
 
-| Вид сдвига | Что меняется | Что остаётся | Пример |
+| Type of shift | What changes | What stays | Example |
 |---|---|---|---|
-| Covariate shift | $P(x)$ | $P(y \mid x)$ | Пришли другие клиенты, правило «доход → риск» то же. Модель может ошибаться там, где мало обучающих данных. |
-| Label shift | $P(y)$ | $P(x \mid y)$ | Доля дефолтов выросла в кризис, калибровка модели нарушается. |
-| Concept shift | $P(y \mid x)$ | — | Те же признаки теперь значат иное. Объяснение описывает старый мир. |
+| Covariate shift | $P(x)$ | $P(y \mid x)$ | Different clients arrive, the rule "income → risk" is the same. The model may err where training data is scarce. |
+| Label shift | $P(y)$ | $P(x \mid y)$ | The default rate rose during a crisis; model calibration breaks. |
+| Concept shift | $P(y \mid x)$ | — | The same features now mean something else. The explanation describes the old world. |
 
-Роль XAI: сравнить атрибуции на обучении и в проде. Если важности значимо сместились, нужно искать, что поменялось.
+Role of XAI: compare attributions in training and in production. If importances have shifted significantly, look for what changed.
 
-### Упражнение: найдите шорткат
+### Exercise: find the shortcut
 
-| Ситуация | Условие | Ответ | Проверка |
+| Situation | Setup | Answer | Check |
 |---|---|---|---|
-| A. Модель оттока клиентов | Самый важный признак — «дата последнего звонка в поддержку» | Утечка из будущего: клиент звонит, чтобы расторгнуть договор, звонок — следствие оттока | Признаки только на момент прогноза |
-| B. Детектор токсичных комментариев | «I am non-binary» получает высокий скор токсичности, «I am straight» — низкий | В обучающих данных упоминания групп чаще встречались в оскорблениях (Dixon et al., 2018) | Шаблоны «I am <группа>» с подстановкой |
-| C. Классификатор танков | Свои и чужие танки различались идеально, в поле модель не работала | Плохое разбиение train / test | — |
+| A. Customer churn model | The most important feature is "date of last call to support" | Leakage from the future: the client calls to terminate the contract, the call is a consequence of churn | Features only as of prediction time |
+| B. Toxic comment detector | "I am non-binary" gets a high toxicity score, "I am straight" a low one | In the training data, group mentions occurred more often in insults (Dixon et al., 2018) | Templates "I am <group>" with substitution |
+| C. Tank classifier | Own and enemy tanks were distinguished perfectly; in the field the model did not work | Poor train / test split | — |
 
-### Необходимость и достаточность
+### Necessity and sufficiency
 
-Вопрос «что повлияло на ответ» распадается на два.
+The question "what influenced the answer" splits into two.
 
-| | Необходимость | Достаточность |
+| | Necessity | Sufficiency |
 |---|---|---|
-| Смысл | Не было бы $x$ — не было бы и $y$ | Был бы $x$ — был бы и $y$ |
-| Логика | $\neg x \Rightarrow \neg y$ | $x \Rightarrow y$ |
-| Вероятность | $\text{PN} = P(Y_{x'} = y' \mid X = x, Y = y)$ | $\text{PS} = P(Y_{x} = y \mid X = x', Y = y')$ |
-| Пример | Пфунгст убрал подсказку зрителей, и «счёт» Ганса сломался: подсказка была необходима | Снега на фоне хватает, чтобы модель сказала «волк» даже без волка |
+| Meaning | Without $x$ there would be no $y$ | With $x$ there would be $y$ |
+| Logic | $\neg x \Rightarrow \neg y$ | $x \Rightarrow y$ |
+| Probability | $\text{PN} = P(Y_{x'} = y' \mid X = x, Y = y)$ | $\text{PS} = P(Y_{x} = y \mid X = x', Y = y')$ |
+| Example | Pfungst removed the audience's cue, and Hans's "counting" broke: the cue was necessary | Snow in the background is enough for the model to say "wolf" even without a wolf |
 
-$Y_{x'}$ — исход, который был бы без $x$ (контрфактуал). Необходимость и достаточность одновременно:
+$Y_{x'}$ is the outcome that would have occurred without $x$ (a counterfactual). Necessity and sufficiency jointly:
 
 $$\text{PNS} = P(Y_x = y,\ Y_{x'} = y')$$
 
-Источник определений: Pearl (1999). Каждый метод курса так раскладывать не будем, но эту рамку полезно держать в голове.
+Source of the definitions: Pearl (1999). We will not decompose every method in the course this way, but this framework is useful to keep in mind.
 
 ---
 
-## 3. Как можно объяснять: термины
+## 3. How one can explain: terms
 
-### Интерпретируемость и объяснение
+### Interpretability and explanation
 
-- **Интерпретируемость** (Doshi-Velez & Kim, 2017) — способность объяснить или представить поведение модели в понятных человеку терминах.
-- **Объяснение** (Miller, 2019) — ответ на вопрос «почему?». Люди спрашивают контрастивно: почему P, а не Q.
+- **Interpretability** (Doshi-Velez & Kim, 2017) — the ability to explain or present the model's behavior in human-understandable terms.
+- **Explanation** (Miller, 2019) — an answer to the question "why?". People ask contrastively: why P rather than Q.
 
-В курсе:
-- интерпретируемая модель понятна целиком (веса, дерево);
-- объяснение — отдельный артефакт, описывающий поведение модели на объекте или в целом.
+In this course:
+- an interpretable model is understandable as a whole (weights, tree);
+- an explanation is a separate artifact describing the model's behavior on an object or overall.
 
-### Модель, объект, объяснение
+### Model, object, explanation
 
 $$f : \mathcal{X} \to \mathcal{Y}, \qquad x \in \mathbb{R}^d, \qquad \hat y = f(x)$$
 
-$$E(f, x) \to \text{вклады} \mid \text{правило} \mid \text{пример} \mid \text{контрфактуал}$$
+$$E(f, x) \to \text{contributions} \mid \text{rule} \mid \text{example} \mid \text{counterfactual}$$
 
-| Тип | Вопрос | Запись |
+| Type | Question | Notation |
 |---|---|---|
-| Локальное | Про один объект $x$: почему этому клиенту отказали | $E(f, x)$ |
-| Глобальное | Про модель на распределении данных: как доход влияет на риск в целом | $E(f, P(X))$ |
+| Local | About a single object $x$: why was this client rejected | $E(f, x)$ |
+| Global | About the model on the data distribution: how does income affect risk overall | $E(f, P(X))$ |
 
-### Локальное и глобальное различаются
+### Local and global differ
 
 $$\mathbb{E}_x\,\lvert \varphi_j(x) \rvert \quad \text{vs} \quad \varphi_j(x_0)$$
 
-Пример с признаком «просрочки»: у большинства клиентов просрочек нет, поэтому средний вклад признака небольшой. У клиента с двумя просрочками вклад +0.87, второй по величине.
+Example with the feature "delinquencies": most clients have no delinquencies, so the feature's mean contribution is small. For a client with two delinquencies the contribution is +0.87, the second largest.
 
-Ранжирование по средней важности отвечает на вопрос о модели. Жалоба клиента — вопрос об объекте. Это разные объяснения.
+Ranking by mean importance answers a question about the model. A client's complaint is a question about an object. These are different explanations.
 
-### Оси таксономии
+### Taxonomy axes
 
-| Ось | Вариант A | Вариант B | Примеры в курсе |
+| Axis | Option A | Option B | Examples in the course |
 |---|---|---|---|
-| Модель | intrinsic: модель объяснима сама | post-hoc: объясняем готовую модель | веса, EBM, дерево · SHAP, LIME |
-| Доступ к модели | model-specific: нужны внутренности | model-agnostic: только запросы $f(x)$ | Grad-CAM, TreeSHAP · LIME, occlusion |
-| Форма | На том же объекте: коэффициенты признаков, тепловые карты | Вне объекта: правила, контрфактуалы, другая модель | раздел 4 |
+| Model | intrinsic: the model is explainable by itself | post-hoc: we explain a trained model | weights, EBM, tree · SHAP, LIME |
+| Model access | model-specific: internals are needed | model-agnostic: only queries $f(x)$ | Grad-CAM, TreeSHAP · LIME, occlusion |
+| Form | On the same object: feature coefficients, heatmaps | Outside the object: rules, counterfactuals, another model | section 4 |
 
-### Упражнение: разложите методы по осям
+### Exercise: place the methods on the axes
 
-| Метод | intrinsic / post-hoc | local / global | specific / agnostic |
+| Method | intrinsic / post-hoc | local / global | specific / agnostic |
 |---|---|---|---|
-| Веса логистической регрессии | intrinsic | оба: вес и вес × признак | specific |
-| Тепловая карта (любая) | post-hoc | local | specific |
-| Контрфактуал | post-hoc | local | agnostic или по градиентам |
-| Внимание трансформера | часть модели | local | specific (с осторожностью) |
+| Logistic regression weights | intrinsic | both: weight and weight × feature | specific |
+| Heatmap (any) | post-hoc | local | specific |
+| Counterfactual | post-hoc | local | agnostic or gradient-based |
+| Transformer attention | part of the model | local | specific (with caution) |
 
 ---
 
-## 4. Формы объяснения
+## 4. Forms of explanation
 
-### Объяснение — сама модель
+### The explanation is the model itself
 
-Логистическая регрессия:
+Logistic regression:
 
 $$\log \frac{P(y = 1)}{P(y = 0)} = \beta_0 + \sum_j \beta_j x_j$$
 
-$\beta_j$ — изменение log-odds при росте $x_j$ на одно стандартное отклонение при прочих равных.
+$\beta_j$ is the change in log-odds when $x_j$ increases by one standard deviation, all else being equal.
 
-Пример: вес дохода $-0.76$, $e^{-0.76} \approx 0.47$. Рост дохода на $1\sigma$ уменьшает шансы дефолта примерно вдвое.
+Example: income weight $-0.76$, $e^{-0.76} \approx 0.47$. An increase in income by $1\sigma$ roughly halves the odds of default.
 
-### Объяснение — путь от корня к листу
+### The explanation is a root-to-leaf path
 
-Правило из дерева решений:
+A rule from a decision tree:
 
-$$\text{IF нагрузка} > 0.35 \ \text{AND доход} \le 78 \ \text{THEN} \ P(\text{дефолт}) = 0.57$$
+$$\text{IF debt load} > 0.35 \ \text{AND income} \le 78 \ \text{THEN} \ P(\text{default}) = 0.57$$
 
-### Объяснение — модель поменьше (LIME)
+### The explanation is a smaller model (LIME)
 
 $$g^* = \arg\min_{g \in G} \ L(f, g, \pi_x) + \Omega(g)$$
 
-- $\pi_x$ — вес близости точки к $x$;
-- $L$ — расхождение $g$ и $f$ в окрестности $x$;
-- $\Omega(g)$ — штраф за сложность $g$.
+- $\pi_x$ — proximity weight of a point to $x$;
+- $L$ — discrepancy between $g$ and $f$ in the neighborhood of $x$;
+- $\Omega(g)$ — complexity penalty on $g$.
 
-Граница суррогата рядом с $x$ хорошо приближает настоящую границу модели.
+Near $x$, the surrogate's boundary approximates the model's true boundary well.
 
-### Объяснение — область данных (Grad-CAM)
+### The explanation is a region of the data (Grad-CAM)
 
 $$L^c = \mathrm{ReLU}\Big(\sum_k \alpha_k^c A^k\Big), \qquad \alpha_k^c = \operatorname{mean}_{h,w} \frac{\partial f^c}{\partial A^k_{hw}}$$
 
-- $A^k$ — активации канала $k$;
-- $\alpha_k^c$ — важность канала $k$ для класса $c$.
+- $A^k$ — activations of channel $k$;
+- $\alpha_k^c$ — importance of channel $k$ for class $c$.
 
-На последнем слое карта 7×7, объектная. На ранних слоях карта детальнее, но шумнее.
+At the last layer the map is 7×7 and object-level. At earlier layers the map is more detailed but noisier.
 
-### Четыре формы ответа
+### Four forms of answer
 
-| Форма | Вопрос | Запись |
+| Form | Question | Notation |
 |---|---|---|
-| Важности | Какие признаки сдвинули прогноз | $\varphi_j(x),\ j = 1, \dots, d$ |
-| Примеры | На какие объекты обучения похож этот | $x^{(i)} \in \text{train}$, близкие к $x$ |
-| Правила | При каком условии ответ сохраняется | IF … THEN $\hat y$, precision $\ge \tau$ |
-| Контрфактуалы | Что минимально изменить, чтобы ответ стал другим | $x' = \arg\min d(x, x') : f(x') \ne f(x)$ |
+| Importances | Which features shifted the prediction | $\varphi_j(x),\ j = 1, \dots, d$ |
+| Examples | Which training objects this one resembles | $x^{(i)} \in \text{train}$, close to $x$ |
+| Rules | Under what condition the answer is preserved | IF … THEN $\hat y$, precision $\ge \tau$ |
+| Counterfactuals | What minimal change makes the answer different | $x' = \arg\min d(x, x') : f(x') \ne f(x)$ |
 
-### Контрфактуал
+### Counterfactual
 
 $$x' = \arg\min_{x'} d(x, x') \quad \text{s.t.} \quad f(x') \ne f(x)$$
 
-Пример для клиента с отказом:
-- $x'_1$: доход 40 → 69 тыс., нагрузка 0.58 → 0.47;
-- $x'_2$: только доход 40 → 84 тыс.
+Example for a rejected client:
+- $x'_1$: income 40 → 69 thousand, debt load 0.58 → 0.47;
+- $x'_2$: only income 40 → 84 thousand.
 
-Требования к контрфактуалу:
-- **минимальный:** мало изменений;
-- **выполнимый:** меняются только изменяемые признаки (возраст не меняется);
-- **правдоподобный:** такие объекты встречаются в данных.
+Requirements for a counterfactual:
+- **minimal:** few changes;
+- **actionable:** only mutable features change (age does not change);
+- **plausible:** such objects occur in the data.
 
-### Примеры и правила
+### Examples and rules
 
-- **Примеры** (kNN, ProtoPNet — Chen et al., 2019). «Это похоже вот на то»: модель сравнивает объект с выученными прототипами или соседями из обучающей выборки.
-- **Правила** (Anchors — Ribeiro et al., 2018). Например: IF нагрузка > 0.5 AND просрочки ≥ 2 THEN отказ.
-  - precision — как часто правило даёт тот же ответ;
-  - coverage — на какой доле данных правило выполняется.
+- **Examples** (kNN, ProtoPNet — Chen et al., 2019). "This looks like that": the model compares the object with learned prototypes or neighbors from the training set.
+- **Rules** (Anchors — Ribeiro et al., 2018). For example: IF debt load > 0.5 AND delinquencies ≥ 2 THEN reject.
+  - precision — how often the rule yields the same answer;
+  - coverage — on what fraction of the data the rule holds.
 
 ---
 
-## 5. Кому объяснять
+## 5. Whom to explain to
 
-### Разные вопросы у разных людей
+### Different people ask different questions
 
-| Кто | Что спрашивает | Что ему нужно | Форма |
+| Who | What they ask | What they need | Form |
 |---|---|---|---|
-| Разработчик | Где модель ошибается и почему? | Глобальная картина, поиск утечек | важности, PDP, карты |
-| Пользователь | Почему отказ и что мне сделать? | Понятная причина и действие | контрфактуал |
-| Эксперт (врач) | Можно ли верить в этом случае? | Опора на знакомые признаки | примеры, карты |
-| Регулятор | Не дискриминирует ли модель? | Проверяемость, воспроизводимость | глобальные объяснения и аудит |
-| Пострадавший | Можно ли оспорить решение? | Конкретная причина и путь апелляции | контрфактуал и правило |
+| Developer | Where does the model err and why? | Global picture, leakage search | importances, PDP, maps |
+| User | Why the rejection and what should I do? | A clear reason and an action | counterfactual |
+| Expert (physician) | Can it be trusted in this case? | Reliance on familiar features | examples, maps |
+| Regulator | Does the model discriminate? | Auditability, reproducibility | global explanations and audit |
+| Affected person | Can the decision be contested? | A specific reason and an appeal path | counterfactual and rule |
 
-### Как люди задают вопрос «почему» (Miller, 2019)
+### How people ask "why" (Miller, 2019)
 
-| Свойство | Содержание | Запись |
+| Property | Content | Notation |
 |---|---|---|
-| Контрастивно | «Почему отказ, а не одобрение?», а не «почему отказ вообще» | why P, not Q? |
-| Избирательно | Людям нужны 1–3 причины, а не 30 вкладов | top-k ≪ d |
-| Социально | Объяснение подстраивают под собеседника и его знания | $E = E(f, x, \text{кто})$ |
+| Contrastive | "Why rejection rather than approval?", not "why rejection at all" | why P, not Q? |
+| Selective | People need 1–3 reasons, not 30 contributions | top-k ≪ d |
+| Social | The explanation is tailored to the listener and their knowledge | $E = E(f, x, \text{who})$ |
 
-Вектор вкладов по 50 признакам не соответствует тому, что человек называет объяснением.
+A vector of contributions over 50 features does not match what a person calls an explanation.
 
-### Свойства объяснения
+### Properties of an explanation
 
-| Свойство | Вопрос | Как измерять |
+| Property | Question | How to measure |
 |---|---|---|
-| Верность | Отражает ли объяснение настоящую модель | $f(x) - f(x \text{ без топ-}k\text{ важных})$ |
-| Стабильность | Близкие объекты получают близкие объяснения | $\lVert \varphi(x) - \varphi(x + \varepsilon) \rVert$ |
-| Понятность | Человек может воспользоваться объяснением за минуту | субъективная метрика |
-| Выполнимость | Можно действовать: изменить доход, а не возраст | $x' \in$ допустимое множество (субъективно) |
+| Faithfulness | Does the explanation reflect the actual model | $f(x) - f(x \text{ without top-}k\text{ important})$ |
+| Stability | Similar objects receive similar explanations | $\lVert \varphi(x) - \varphi(x + \varepsilon) \rVert$ |
+| Comprehensibility | A person can use the explanation within a minute | subjective metric |
+| Actionability | One can act: change income, not age | $x' \in$ feasible set (subjective) |
 
-Правдоподобие (plausibility, «выглядит разумно») не равно верности (faithfulness, «правда про модель»).
+Plausibility ("looks reasonable") is not the same as faithfulness ("true about the model").
 
 ---
 
-## Дальше
+## Next
 
-- Занятие 02 (четверг): AI safety — что может пойти не так с мощным ИИ.
-- В субботу продолжаем формализацию.
-- До дедлайна ДЗ-1 — проходить курс на Stepik.
+- Lesson 02 (Thursday): AI safety — what can go wrong with powerful AI.
+- On Saturday we continue the formalization.
+- Before the HW1 deadline, work through the Stepik course.
 
 ---
 
-## Источники со слайдов
+## Sources from the slides
 
-- Ribeiro, Singh, Guestrin. «Why should I trust you?»: Explaining the predictions of any classifier. KDD, 2016.
+- Ribeiro, Singh, Guestrin. "Why should I trust you?": Explaining the predictions of any classifier. KDD, 2016.
 - Zech et al. Variable generalization performance of a deep learning model to detect pneumonia in chest radiographs: a cross-sectional study. PLOS Medicine, 2018.
 - DeGrave, Janizek, Lee. AI for radiographic COVID-19 detection selects shortcuts over signal. Nature Machine Intelligence, 2021.
 - Oakden-Rayner, Dunnmon, Carneiro, Ré. Hidden stratification causes clinically meaningful failures in machine learning for medical imaging. ACM CHIL, 2020.

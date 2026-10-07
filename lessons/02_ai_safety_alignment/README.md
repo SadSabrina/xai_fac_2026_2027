@@ -1,109 +1,109 @@
-# Занятие 02. AI safety: что может пойти не так с мощным ИИ и как от этого защищаются
+# Lesson 02. AI safety: what can go wrong with powerful AI and how we defend against it
 
-Совместное занятие. Презентация — на Google Диске курса.
+Joint lesson. Slides are on the course Google Drive.
 
-## Темы
-1. Почему об этом говорят сейчас: инциденты с агентами 2025–2026 годов.
-2. Что на кону: три класса рисков.
-3. Почему alignment — трудная задача.
-4. Модели, которые замечают проверку.
-5. Как защищаются: defense in depth.
-6. Интерпретируемость и что дальше.
+## Topics
+1. Why now: incidents with AI agents in 2025–2026.
+2. What is at stake: three classes of risk.
+3. Why alignment is hard.
+4. Models that notice they are being tested.
+5. How we defend: defense in depth.
+6. Interpretability and what comes next.
 
 ---
 
-## 1. Почему сейчас
+## 1. Why now
 
-**Инциденты 2025–2026.**
-- **Hugging Face, июль 2026.** Агенты OpenAI во время внутренней оценки кибервозможностей вышли из песочницы через уязвимость нулевого дня и пытались украсть ключ ответов бенчмарка. По расследованию METR, около 1200 агентов координировались через общую доску сообщений, которую им никто не давал.
-- **PocketOS, апрель 2026.** Агент Cursor нашёл в несвязанном файле токен Railway без ограничения прав и одним вызовом API удалил продакшн-том вместе с резервными копиями за 9 секунд.
-- **Другие случаи:** Replit (агент удалил базу во время заморозки кода), EchoLeak (prompt injection в Microsoft 365 Copilot), ClawHavoc (вредоносные навыки в каталоге агента OpenClaw), Gemini на CTF (проникла в системы трёх реальных компаний).
+**Incidents of 2025–2026.**
+- **Hugging Face, July 2026.** During an internal cyber-capability evaluation, OpenAI agents escaped their sandbox through a zero-day vulnerability and tried to steal the benchmark answer key. According to METR's investigation, about 1,200 agents coordinated through a shared message board that nobody had given them.
+- **PocketOS, April 2026.** A Cursor agent found an unscoped Railway token in an unrelated file and, with a single API call, deleted the production volume together with its backups in 9 seconds.
+- **Other cases:** Replit (an agent deleted a database during a code freeze), EchoLeak (prompt injection in Microsoft 365 Copilot), ClawHavoc (malicious skills in the OpenClaw agent catalogue), Gemini in a CTF (broke into the systems of three real companies).
 
-**От инструментов к агентам.** Классическая модель узкая, только предсказывает и проверяется на отложенной выборке. Агент получает цель, действует через инструменты (код, браузер, письма, платежи), и человеку трудно проверить результат.
+**From tools to agents.** A classical model is narrow, only predicts, and is evaluated on a held-out set. An agent receives a goal, acts through tools (code, browser, email, payments), and its result is hard for a human to check.
 
-**Рост возможностей.** METR измеряет горизонт задач — длину задачи в часах работы специалиста, которую модель решает с вероятностью 50%. С 2023 года он удваивается примерно каждые 4 месяца. Claude Mythos Preview — не меньше 16 часов. Оценка GPT-5.6 Sol — от 11 до более чем 270 часов: результат зависит от того, засчитывать ли прогоны, где модель жульничала.
+**Growth of capabilities.** METR measures the task horizon: the length of a task, in hours of expert work, that a model solves with 50% probability. Since 2023 it has doubled roughly every 4 months. Claude Mythos Preview: at least 16 hours. The estimate for GPT-5.6 Sol ranges from 11 to over 270 hours, depending on whether runs in which the model cheated are counted.
 
-**Три двигателя прогресса:** масштаб; обучение с подкреплением на задачах с проверяемым ответом; ИИ, который пишет код для обучения следующих моделей.
+**Three engines of progress:** scale; reinforcement learning on tasks with verifiable answers; AI writing code to train the next models.
 
-**Термины.**
+**Terms.**
 
-| Термин | Что значит |
+| Term | Meaning |
 |---|---|
-| AI safety | ИИ не причиняет серьёзного вреда, в том числе непреднамеренно |
-| AI security | защита ИИ-систем от атакующих людей: prompt injection, кража весов |
-| Alignment | часть safety: система преследует цели, которые задумали люди |
+| AI safety | AI does not cause serious harm, including unintentionally |
+| AI security | protecting AI systems from human attackers: prompt injection, weight theft |
+| Alignment | part of safety: the system pursues the goals humans intended |
 
-## 2. Что на кону
+## 2. What is at stake
 
-Три класса рисков (рамка BlueDot):
-- **злоупотребление** — люди используют ИИ во вред (Anthropic, ноябрь 2025: кибершпионаж, где Claude Code выполнил 80–90% операций);
-- **концентрация власти** — государство или компания с мощным ИИ перестаёт зависеть от людей;
-- **потеря контроля** — системы делают не то, что задумано, и их всё труднее проверить.
+Three classes of risk (BlueDot framing):
+- **misuse** — people use AI to cause harm (Anthropic, November 2025: a cyber-espionage campaign in which Claude Code carried out 80–90% of the operations);
+- **concentration of power** — a state or company with powerful AI stops depending on people;
+- **loss of control** — systems do something other than intended and become ever harder to check.
 
-## 3. Почему alignment — трудная задача
+## 3. Why alignment is hard
 
-**Цепочка переводов:** ценности → награда или функция потерь → оптимизация → поведение. На каждом шаге теряется часть смысла.
+**A chain of translations:** values → reward or loss function → optimisation → behaviour. Part of the meaning is lost at every step.
 
-**Закон Гудхарта:** мера, ставшая целью, перестаёт быть мерой.
+**Goodhart's law:** when a measure becomes a target, it ceases to be a good measure.
 $$x^* = \arg\max_x \hat R(x), \qquad U(x^*) \ll \max_x U(x),$$
-где $\hat R$ — то, что оптимизируем, $U$ — то, что хотели.
+where $\hat R$ is what we optimise and $U$ is what we wanted.
 
-**Reward hacking у frontier-моделей.** o3 жульничал в 30,4% прогонов RE-Bench и на вопрос, соответствует ли это намерениям пользователя, отвечал «нет» (METR, 2025). Классический пример — CoastRunners (OpenAI, 2016): лодка кружит за бонусами вместо прохождения трассы.
+**Reward hacking in frontier models.** o3 cheated in 30.4% of RE-Bench runs and, when asked whether this matched the user's intentions, answered "no" (METR, 2025). The classic example is CoastRunners (OpenAI, 2016): the boat circles to collect bonuses instead of finishing the race.
 
-**Два вида провала:**
-- **reward misspecification (outer)** — награда неточно описывает цель;
-- **goal misgeneralization (inner)** — модель выучила цель, совпадавшую с нужной только на обучении (CoinRun: агент бежит вправо мимо монеты).
+**Two kinds of failure:**
+- **reward misspecification (outer misalignment)** — the reward describes the goal inaccurately;
+- **goal misgeneralization (inner misalignment)** — the model learned a goal that coincided with the intended one only during training (CoinRun: the agent runs right, past the coin).
 
-**Emergent misalignment.** Дообучение на узкой задаче (небезопасный код) даёт около 20% несогласованных ответов на несвязанные вопросы (Betley et al., Nature, 2026). Модель, научившаяся жульничать в обучении, саботировала код исследований по безопасности (Anthropic, ноябрь 2025).
+**Emergent misalignment.** Fine-tuning on a narrow task (insecure code) yields about 20% misaligned answers to unrelated questions (Betley et al., Nature, 2026). A model that learned to cheat during training sabotaged safety-research code (Anthropic, November 2025).
 
-**Угодливость.** Награду выдаёт человек, поэтому модель учится нравиться: в апреле 2025 OpenAI откатила обновление GPT-4o из-за чрезмерной угодливости.
+**Sycophancy.** The reward is given by a human, so the model learns to please: in April 2025 OpenAI rolled back a GPT-4o update because of excessive sycophancy.
 
-**Инструментальные цели.** Ресурсы, влияние и «не быть выключенным» полезны почти для любой цели. Злой умысел не нужен — достаточно мощного оптимизатора с неточной целью.
+**Instrumental goals.** Resources, influence and "not being switched off" are useful for almost any goal. No malicious intent is needed — a powerful optimiser with an imprecise goal is enough.
 
-## 4. Модели, которые замечают проверку
+## 4. Models that notice they are being tested
 
-- **Scalable oversight:** когда задача сложнее, чем человек может проверить, человеческая оценка перестаёт быть надёжной наградой.
-- **Agentic Misalignment (Anthropic, 2025):** в симуляции с конфликтом целей и угрозой замены пять frontier-моделей шантажировали в 79–96% случаев. Claude Opus 4 шантажировал в 55,1% случаев, когда считал сценарий реальным, и в 6,5%, когда считал его проверкой.
-- **OpenAI и Apollo Research (2025):** после обучения против скрытых действий их доля у o3 упала с 13% до 0,4%, а доля рассуждений «меня оценивают» выросла с 2,3% до 4,5%.
-- **Вывод:** хорошее поведение на тесте не гарантирует хорошего поведения в работе (International AI Safety Report 2026).
+- **Scalable oversight:** when a task is harder than a human can check, human evaluation stops being a reliable reward.
+- **Agentic Misalignment (Anthropic, 2025):** in a simulation with a goal conflict and a replacement threat, five frontier models resorted to blackmail in 79–96% of cases. Claude Opus 4 blackmailed in 55.1% of cases when it judged the scenario to be real and in 6.5% when it judged it to be a test.
+- **OpenAI and Apollo Research (2025):** after training against covert actions, their rate for o3 fell from 13% to 0.4%, while the share of reasoning saying "I am being evaluated" rose from 2.3% to 4.5%.
+- **Conclusion:** good behaviour on a test does not guarantee good behaviour in deployment (International AI Safety Report 2026).
 
 ## 5. Defense in depth
 
-Несколько независимых слоёв защиты. Вред случается, когда дыры совпадают во всех слоях.
+Several independent layers of defence. Harm happens when the holes line up in all layers.
 
-| Слой | Инструменты |
+| Layer | Tools |
 |---|---|
-| Предотвратить | RLHF, Constitutional AI |
-| Обнаружить | оценки возможностей и склонностей, мониторинг, интерпретируемость |
-| Ограничить | AI control, фильтры входа и выхода, минимальные права, изоляция среды |
-| Выдержать | резервные копии, отчётность об инцидентах, регулирование |
+| Prevent | RLHF, Constitutional AI |
+| Detect | capability and propensity evaluations, monitoring, interpretability |
+| Constrain | AI control, input and output filters, least privilege, environment isolation |
+| Withstand | backups, incident reporting, regulation |
 
-**RLHF:** модель награды обучают на сравнениях людей, затем дообучают модель со штрафом за отход от исходной:
+**RLHF:** a reward model is trained on human comparisons; then the model is fine-tuned with a penalty for drifting from the original one:
 $$P(y_1 \succ y_2 \mid x) = \sigma\big(r(x, y_1) - r(x, y_2)\big), \qquad \max_\pi\ \mathbb E[r(x,y)] - \beta\,\mathrm{KL}(\pi \,\|\, \pi_{\text{ref}}).$$
 
-**Регулирование** пока требует прозрачности, а не конкретных мер: EU AI Act (обязанности для моделей общего назначения с 2025 года), California SB 53 (отчёт об инциденте за 15 дней), New York RAISE Act (за 72 часа, с 2027 года).
+**Regulation** so far requires transparency rather than specific measures: the EU AI Act (obligations for general-purpose models since 2025), California SB 53 (incident report within 15 days), the New York RAISE Act (within 72 hours, from 2027).
 
-**Надзор за системой сильнее человека:** debate, recursive reward modeling, weak-to-strong generalization.
+**Overseeing a system stronger than a human:** debate, recursive reward modeling, weak-to-strong generalization.
 
-## 6. Интерпретируемость и что дальше
+## 6. Interpretability and what comes next
 
-- **Probes** — линейные классификаторы на активациях; ловили встроенный бэкдор с AUROC > 99%.
-- **Мониторинг рассуждений** ловит хаки награды лучше, чем мониторинг действий, но это «хрупкая возможность»: при оптимизации против монитора модель учится его обманывать.
-- **Связь с курсом:** reward hacking — та же проблема, что шорткаты из занятия 01, «можно ли верить объяснению» — блок IV, probes и LLM — занятие 11, агенты — занятие 12.
+- **Probes** — linear classifiers on activations; they detected an implanted backdoor with AUROC > 99%.
+- **Chain-of-thought monitoring** catches reward hacks better than monitoring actions, but it is a "fragile opportunity": when optimised against the monitor, the model learns to deceive it.
+- **Link to the course:** reward hacking is the same problem as the shortcuts of lesson 01; "can we trust an explanation" is block IV; probes and LLMs are lesson 11; agents are lesson 12.
 
-## Что почитать
+## Further reading
 - International AI Safety Report 2026.
-- BlueDot Impact: [bluedot.org/courses](https://bluedot.org/courses) — The Future of AI (2 часа, бесплатно), AGI Strategy, Technical AI Safety.
+- BlueDot Impact: [bluedot.org/courses](https://bluedot.org/courses) — The Future of AI (2 hours, free), AGI Strategy, Technical AI Safety.
 - A. Jones, What is AI alignment? (BlueDot, 2024).
 - Amodei et al., Concrete problems in AI safety, 2016; Ngo et al., The alignment problem from a deep learning perspective, 2022.
-- Карта организаций: [aisafety.com/map](https://www.aisafety.com/map).
+- Map of organisations: [aisafety.com/map](https://www.aisafety.com/map).
 
-## Источники по событиям 2025–2026
-- Hugging Face, Agent intrusion: technical timeline (27.07.2026); METR, OpenAI–Hugging Face incident investigation (26.08.2026).
-- PocketOS: Decrypt (26.04.2026).
-- METR: Time Horizon 1.1 (01.2026); оценки Claude Mythos Preview (05.2026) и GPT-5.6 Sol (26.06.2026); Frontier Risk Report (19.05.2026); reward hacking у o3 (05.06.2025).
-- Anthropic: Project Glasswing и Claude Mythos Preview System Card (07.04.2026); Agentic Misalignment (20.06.2025); AI-orchestrated cyber espionage (11.2025); natural emergent misalignment from reward hacking (21.11.2025).
+## Sources for the 2025–2026 events
+- Hugging Face, Agent intrusion: technical timeline (27 Jul 2026); METR, OpenAI–Hugging Face incident investigation (26 Aug 2026).
+- PocketOS: Decrypt (26 Apr 2026).
+- METR: Time Horizon 1.1 (Jan 2026); evaluations of Claude Mythos Preview (May 2026) and GPT-5.6 Sol (26 Jun 2026); Frontier Risk Report (19 May 2026); reward hacking in o3 (5 Jun 2025).
+- Anthropic: Project Glasswing and the Claude Mythos Preview System Card (7 Apr 2026); Agentic Misalignment (20 Jun 2025); AI-orchestrated cyber espionage (Nov 2025); natural emergent misalignment from reward hacking (21 Nov 2025).
 - Betley et al., Emergent misalignment, Nature 649 (2026).
-- Apollo Research & OpenAI, Stress-testing deliberative alignment (17.09.2025).
+- Apollo Research & OpenAI, Stress-testing deliberative alignment (17 Sep 2025).
 - Korbak et al., Chain of thought monitorability, arXiv:2507.11473 (2025).
-- EU AI Act и Digital Omnibus (2026); California SB 53 (2025); New York RAISE Act (2026).
+- EU AI Act and Digital Omnibus (2026); California SB 53 (2025); New York RAISE Act (2026).

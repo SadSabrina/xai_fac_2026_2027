@@ -1,32 +1,32 @@
-# ДЗ-1. Интерпретируемые модели и post-hoc на таблицах (Stepik)
+# HW1. Interpretable models and post-hoc methods on tabular data (Stepik)
 
-**Курс:** [«Интерпретируемые модели AI» на Stepik](https://stepik.org/course/228094)
+**Course:** ["Interpretable AI models" on Stepik](https://stepik.org/course/228094) (the course is in Russian)
 
-## Что входит в ДЗ-1
+## What HW1 consists of
 
-Оценку за ДЗ-1 дают практические блоки курса — блоки вида «…: практика». Их четыре:
+The HW1 grade is given by the practice blocks of the course — the blocks named "…: practice". There are four of them:
 
-| Блок Stepik | Модуль | К занятию |
+| Stepik block | Module | Related lesson |
 |---|---|---|
-| Линейные модели: веса, регуляризация и прогнозы | Линейные интерпретируемые модели | 03 |
-| Лес | Нелинейные интерпретируемые модели | 03 |
-| Основы семейства SHAP-методов: практика | Методы объяснений | 05 |
-| LIME: практика | Методы объяснений | 05 |
+| Linear models: weights, regularization and predictions | Linear interpretable models | 03 |
+| Forest | Nonlinear interpretable models | 03 |
+| Basics of the SHAP family of methods: practice | Explanation methods | 05 |
+| LIME: practice | Explanation methods | 05 |
 
-Оценка за ДЗ-1 = доля баллов за эти четыре блока × 10.
+HW1 grade = share of points for these four blocks × 10.
 
-## Остальные задания курса
+## Other tasks of the course
 
-Все остальные тестовые задания Stepik идут в отдельную оценку **Stepik** (вес 0,1 в итоговой формуле, см. [README курса](../../README.md#оценивание)). Её дедлайн — конец курса.
+All other Stepik quiz tasks form a separate **Stepik** grade (weight 0.1 in the final formula, see the [course README](../../README.md#grading)). Its deadline is the end of the course.
 
-## Сроки
+## Deadlines
 
-| Что | Дедлайн |
+| What | Deadline |
 |---|---|
-| ДЗ-1 (четыре практических блока) | через 2 недели после занятия 05, дата TBD |
-| Stepik целиком | конец курса, дата TBD |
+| HW1 (four practice blocks) | 2 weeks after lesson 05, date TBD |
+| The whole Stepik course | end of the course, date TBD |
 
-## Важно
+## Important
 
-- **Stepik-id** для проставления оценок собираются за неделю до дедлайна ДЗ-1.
-- **Выгрузка результатов Stepik делается только два раза:** после дедлайна ДЗ-1 и в конце курса. Решения, сданные после выгрузки, в оценку за ДЗ-1 не попадут.
+- **Stepik IDs** for grading are collected one week before the HW1 deadline.
+- **Stepik results are exported only twice:** after the HW1 deadline and at the end of the course. Solutions submitted after the export do not count towards HW1.

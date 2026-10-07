@@ -1,13 +1,13 @@
-# материалы для подготовки и исходники слайдов 
+# preparation materials and slide sources
 related/
 **/related/
 **/slides_src/
 tools
 
-# занятия в подготовке: готовое занятие переносится обратно в lessons/
+# lessons in preparation: a finished lesson is moved back to lessons/
 in_prepare/
 
-# презентации раздаются через Google Диск
+# slides are shared via Google Drive
 *.pptx
 *.key
 
@@ -17,13 +17,13 @@ in_prepare/
 __pycache__/
 .ipynb_checkpoints/
 
-# скачиваемые данные (Imagenette, MovieLens) — ноутбуки скачивают их сами
+# downloaded data (Imagenette, MovieLens): the notebooks download it themselves
 data/imagenette2-160*
 data/ml-100k*
 **/data/imagenette2-160*
 **/data/ml-100k*
 
-# эталонные решения (не отдам =))
+# reference solutions (not handing them out =))
 solutions/
 tools/build_hw*.py
 tools/hw*_answers.json
