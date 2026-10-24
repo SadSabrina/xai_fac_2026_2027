@@ -30,5 +30,5 @@ tools/build_hw*.py
 tools/hw*_answers.json
 
 # in progress
-homeworks/hw2_modalities
+homeworks/hw2_modalities_v0
 homeworks/hw3_trust_llm_agents
