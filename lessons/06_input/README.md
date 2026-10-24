@@ -176,7 +176,7 @@ $$\mathrm{IG}_j = (x_j - x'_j)\int_0^1 \frac{\partial f\big(x' + \alpha(x - x')\
 
 В каждой клетке — решение автора объяснения; его пишут рядом с картой.
 
-**ДЗ-2** выдаётся сегодня, дедлайн — перед занятием 08: [homeworks/hw2_modalities](../../homeworks/hw2_modalities/).
+**ДЗ-2** выдаётся 24 октября, дедлайн — 14 ноября в 23:59 МСК: [homeworks/hw2_modalities](../../homeworks/hw2_modalities/).
 
 ## Литература
 - Achanta et al., SLIC superpixels compared to state-of-the-art superpixel methods, TPAMI 2012.
