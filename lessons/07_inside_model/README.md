@@ -135,7 +135,7 @@ $$p(y\mid \text{картинка}, \text{вопрос}) = \prod_t p(y_t \mid v_1
 
 Устройство модели подсказывает гипотезу, вмешательство во вход её проверяет.
 
-**ДЗ-2**, часть 3 «Внутри модели» — к этому занятию; дедлайн — перед занятием 08: [homeworks/hw2_modalities](../../homeworks/hw2_modalities/).
+**ДЗ-2**, часть 3 «Внутри модели» — к этому занятию; дедлайн — 14 ноября 23:59: [homeworks/hw2_modalities](../../homeworks/hw2_modalities/).
 
 ## Литература
 - Battaglia et al., Relational inductive biases, deep learning, and graph networks, arXiv:1806.01261, 2018.
