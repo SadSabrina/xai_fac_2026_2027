@@ -32,3 +32,4 @@ tools/hw*_answers.json
 # in progress
 homeworks/hw2_modalities_v0
 homeworks/hw3_trust_llm_agents
+lessons/08_evaluating_explanations/demo_08_evaluating_explanations.ipynb
