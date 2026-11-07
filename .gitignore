@@ -33,3 +33,4 @@ tools/hw*_answers.json
 homeworks/hw2_modalities_v0
 homeworks/hw3_trust_llm_agents
 lessons/08_evaluating_explanations/demo_08_evaluating_explanations.ipynb
+lessons/09_fragility_attacks/demo_09_fragility_attacks.ipynb
